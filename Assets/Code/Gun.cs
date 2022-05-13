@@ -2,23 +2,22 @@
 
 namespace GameAsteroids
 {
-    public sealed class Gun : MonoBehaviour
+    public sealed class Gun
     {
-        private Rigidbody2D _bulletRb;
-        private GameObject _bullet;
-        private float _force;
+        private readonly Rigidbody2D _bulletRb;
+        private readonly IViewServices _viewServices;
 
-        private void Start()
+        public Gun(Rigidbody2D bulletRb, IViewServices viewServices)
         {
-            _force = 70.0f;
-            _bullet = Resources.Load("Bullet") as GameObject;
-            _bulletRb = _bullet.GetComponent<Rigidbody2D>();
+            _bulletRb = bulletRb;
+            _viewServices = viewServices;
         }
 
         public void Fire()
         {
-            var temAmmunition = Instantiate(_bulletRb, transform.position, transform.rotation);
-            temAmmunition.AddForce(transform.up * _force);
+            var bullet = _viewServices.Instantiate<Rigidbody2D>(_bulletRb.gameObject);
+            bullet.AddForce(Vector3.forward);
+            _viewServices.Destroy(bullet.gameObject);
         }
     }
 }

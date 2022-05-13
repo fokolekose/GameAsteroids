@@ -6,6 +6,20 @@ namespace GameAsteroids
     {
         private PlayerShip _playerShip;
         private Gun _gun;
+        private Bullet _bullet;
+
+        public Bullet Bullet
+        {
+            get
+            {
+                if(_bullet == null)
+                {
+                    var gameObject = Resources.Load<Bullet>("Bullet");
+                    _bullet = Object.Instantiate(gameObject);
+                }
+                return _bullet;
+            }
+        }
 
         public Gun Gun
         {

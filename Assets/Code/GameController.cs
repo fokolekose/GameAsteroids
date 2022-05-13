@@ -4,19 +4,32 @@ namespace GameAsteroids
 {
     internal sealed class GameController : MonoBehaviour
     {
-        [SerializeField] private float _hp = 10;
         private InputController _inputController;
         private Reference _reference;
+        private Gun _gun;
+        private Rigidbody2D _bulletRb;
+        private IViewServices _viewServices;
 
         private void Start()
         {
+            _viewServices = new ViewServices();
+            _bulletRb = _reference.Bullet.GetComponent<Rigidbody2D>();
             _reference = new Reference();
-            _inputController = new InputController(_reference.PlayerShip, _reference.Gun);
+            _gun = new Gun(_bulletRb, _viewServices);
+            _inputController = new InputController(_reference.PlayerShip, _gun);
+            
+
+            Enemy.CreateAsteroidEnemy(new Health(100.0f, 100.0f));
+
+            //BulletPool bulletPool = new BulletPool(5);
+            //var bullet = bulletPool.GetBullet("Bullet1");
+            //bullet.transform.position = Vector3.one;
+            //bullet.gameObject.SetActive(true);
         }
 
         private void FixedUpdate()
         {
-            _inputController.Execute();
+            _inputController.ExecuteFixedUpdate();
         }
 
         private void Update()
@@ -30,10 +43,10 @@ namespace GameAsteroids
             {
                 return;
             }
-            else
-            {
-                _reference.PlayerShip.GetDamage(_hp);
-            }
+            //else
+            //{
+            //    _reference.PlayerShip.GetDamage(_hp);
+            //}
         }
     }
 }

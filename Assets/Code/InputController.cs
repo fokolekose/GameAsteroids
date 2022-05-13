@@ -15,7 +15,7 @@ namespace GameAsteroids
             _camera = Camera.main;
         }
 
-        public void Execute()
+        public void ExecuteFixedUpdate()
         {
             _ship.Move(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
